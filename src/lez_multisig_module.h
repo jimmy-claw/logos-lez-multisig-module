@@ -16,6 +16,9 @@ extern "C" {
 #include <QQmlEngine>
 #include <QFutureWatcher>
 
+#include "registry_bridge.h"
+
+
 class ProposalListModel;
 
 /**
@@ -61,6 +64,10 @@ public:
     Q_INVOKABLE void createMultisigAsync(const QString& argsJson);
     Q_INVOKABLE void proposeAsync(const QString& argsJson);
 
+    // ── Registry ─────────────────────────────────────────────────────────────
+
+    Q_INVOKABLE RegistryBridge* registryBridge() const { return m_registryBridge; }
+
 signals:
     void eventResponse(const QString& eventName, const QVariantList& data);
     void proposalsRefreshed(const QString& resultJson);
@@ -80,6 +87,7 @@ private:
     QFutureWatcher<QString>* m_proposeWatcher  = nullptr;
 
     QString m_defaultSequencerUrl;
+    RegistryBridge* m_registryBridge = nullptr;
     QString m_defaultWalletPath;
 
     using FfiJsonFn = char* (*)(const char*);

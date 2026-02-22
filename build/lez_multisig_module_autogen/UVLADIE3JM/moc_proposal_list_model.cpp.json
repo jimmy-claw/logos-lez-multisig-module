@@ -1,0 +1,171 @@
+{
+    "classes": [
+        {
+            "className": "ProposalListModel",
+            "enums": [
+                {
+                    "isClass": false,
+                    "isFlag": false,
+                    "name": "Roles",
+                    "values": [
+                        "IndexRole",
+                        "ProposerRole",
+                        "TargetProgramIdRole",
+                        "TargetAccountCountRole",
+                        "ApprovedCountRole",
+                        "RejectedCountRole",
+                        "StatusRole",
+                        "ProposalPdaRole",
+                        "MultisigCreateKeyRole"
+                    ]
+                }
+            ],
+            "lineNumber": 24,
+            "methods": [
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "url",
+                            "type": "QString"
+                        }
+                    ],
+                    "index": 5,
+                    "name": "setSequencerUrl",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "createKey",
+                            "type": "QString"
+                        }
+                    ],
+                    "index": 6,
+                    "name": "setCreateKey",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "programId",
+                            "type": "QString"
+                        }
+                    ],
+                    "index": 7,
+                    "name": "setMultisigProgramId",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "walletPath",
+                            "type": "QString"
+                        }
+                    ],
+                    "index": 8,
+                    "name": "setWalletPath",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "index": 9,
+                    "isConst": true,
+                    "name": "sequencerUrl",
+                    "returnType": "QString"
+                }
+            ],
+            "object": true,
+            "properties": [
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": false,
+                    "index": 0,
+                    "name": "loading",
+                    "notify": "loadingChanged",
+                    "read": "loading",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "bool",
+                    "user": false
+                },
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": false,
+                    "index": 1,
+                    "name": "error",
+                    "notify": "errorChanged",
+                    "read": "error",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "QString",
+                    "user": false
+                },
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": false,
+                    "index": 2,
+                    "name": "count",
+                    "notify": "countChanged",
+                    "read": "rowCount",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "int",
+                    "user": false
+                }
+            ],
+            "qualifiedClassName": "ProposalListModel",
+            "signals": [
+                {
+                    "access": "public",
+                    "index": 0,
+                    "name": "loadingChanged",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "index": 1,
+                    "name": "errorChanged",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "index": 2,
+                    "name": "countChanged",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "index": 3,
+                    "name": "refreshed",
+                    "returnType": "void"
+                }
+            ],
+            "slots": [
+                {
+                    "access": "public",
+                    "index": 4,
+                    "name": "refresh",
+                    "returnType": "void"
+                }
+            ],
+            "superClasses": [
+                {
+                    "access": "public",
+                    "name": "QAbstractListModel"
+                }
+            ]
+        }
+    ],
+    "inputFile": "proposal_list_model.h",
+    "outputRevision": 69
+}

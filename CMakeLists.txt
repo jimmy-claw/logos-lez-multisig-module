@@ -33,6 +33,13 @@ if("${LEZ_MULTISIG_INCLUDE}" STREQUAL "")
     message(STATUS "LEZ_MULTISIG_INCLUDE not set — using bundled header: ${LEZ_MULTISIG_INCLUDE}")
 endif()
 
+# ── lez-registry-ffi (optional — for Browse Registry feature) ────────────────
+set(LEZ_REGISTRY_INCLUDE "" CACHE PATH "Path to directory containing lez_registry.h")
+if("${LEZ_REGISTRY_INCLUDE}" STREQUAL "")
+    set(LEZ_REGISTRY_INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+    message(STATUS "LEZ_REGISTRY_INCLUDE not set — using bundled header: ${LEZ_REGISTRY_INCLUDE}")
+endif()
+
 # ── SDK interface targets ─────────────────────────────────────────────────────
 add_library(logos_cpp_sdk INTERFACE)
 target_include_directories(logos_cpp_sdk INTERFACE
@@ -53,6 +60,7 @@ qt_add_plugin(${PLUGIN_TARGET} CLASS_NAME LezMultisigModule)
 target_sources(${PLUGIN_TARGET} PRIVATE
     src/lez_multisig_module.cpp
     src/proposal_list_model.cpp
+    src/registry_bridge.cpp
     src/plugin.cpp
     qml/qml.qrc
 )
@@ -64,6 +72,7 @@ set_property(TARGET ${PLUGIN_TARGET} PROPERTY PUBLIC_HEADER
 target_include_directories(${PLUGIN_TARGET} PRIVATE
     src
     "${LEZ_MULTISIG_INCLUDE}"
+    "${LEZ_REGISTRY_INCLUDE}"
 )
 
 # ── lez-multisig-ffi linkage ──────────────────────────────────────────────────

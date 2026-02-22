@@ -6,6 +6,7 @@
 #include <logos_api_client.h>
 
 #include <QDebug>
+#include "registry_bridge.h"
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QByteArray>
@@ -139,6 +140,13 @@ void LezMultisigModule::initLogos(LogosAPI* logosAPIInstance) {
             QStringLiteral("lezMultisigModel"), m_model);
         m_qmlEngine->rootContext()->setContextProperty(
             QStringLiteral("lezMultisigModule"), this);
+
+        // Create and register registry bridge
+        m_registryBridge = new RegistryBridge(this);
+        m_registryBridge->loadLibrary(); // uses LEZ_REGISTRY_FFI_PATH env var or default
+        m_qmlEngine->rootContext()->setContextProperty(
+            QStringLiteral("lezRegistryBridge"), m_registryBridge);
+
         qInfo() << "LezMultisigModule: QML context properties registered";
     }
 

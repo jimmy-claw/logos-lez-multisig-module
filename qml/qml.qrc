@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/LezMultisigView.qml</file>
+        <file>qml/CreateMultisigForm.qml</file>
+        <file>qml/ProposeForm.qml</file>
+        <file>qml/ProposalCard.qml</file>
+        <file>qml/ProposalDetail.qml</file>
+        <file>qml/Theme.qml</file>
+        <file>qml/qmldir</file>
+    </qresource>
+</RCC>

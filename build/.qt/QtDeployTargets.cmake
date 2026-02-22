@@ -1,0 +1,2 @@
+set(__QT_DEPLOY_TARGET_lez_multisig_module_FILE /home/jimmy/logos-lez-multisig-module/build/liblez_multisig_module.so)
+set(__QT_DEPLOY_TARGET_lez_multisig_module_TYPE MODULE_LIBRARY)
