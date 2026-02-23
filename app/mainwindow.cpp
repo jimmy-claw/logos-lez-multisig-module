@@ -11,6 +11,8 @@
 #include <QQmlEngine>
 #include <QQmlContext>
 #include <QUrl>
+#include "../src/lez_multisig_module.h"
+#include "../src/proposal_list_model.h"
 #include <QFile>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -60,6 +62,14 @@ void MainWindow::setupUi()
     } else {
         qmlUrl = QUrl("qrc:/qml/LezMultisigView.qml");
     }
+
+    // Create and register the multisig module for QML access
+    auto* module = new LezMultisigModule(this);
+    auto* model = module->proposalModel();
+    m_quickWidget->engine()->rootContext()->setContextProperty(
+        QStringLiteral("lezMultisigModule"), module);
+    m_quickWidget->engine()->rootContext()->setContextProperty(
+        QStringLiteral("lezMultisigModel"), model ? model : new QObject(this));
 
     m_quickWidget->setSource(qmlUrl);
 

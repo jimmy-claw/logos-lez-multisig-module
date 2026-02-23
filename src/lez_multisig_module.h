@@ -67,6 +67,7 @@ public:
     // ── Registry ─────────────────────────────────────────────────────────────
 
     Q_INVOKABLE RegistryBridge* registryBridge() const { return m_registryBridge; }
+    Q_INVOKABLE ProposalListModel* proposalModel() const { return m_model; }
 
 signals:
     void eventResponse(const QString& eventName, const QVariantList& data);

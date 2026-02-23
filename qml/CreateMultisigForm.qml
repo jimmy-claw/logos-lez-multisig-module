@@ -116,13 +116,6 @@ Item {
                     }
                 }
 
-                FormField {
-                    id: programIdField_wrapper
-                    label: "Multisig Program ID"
-                    placeholder: "64 hex chars (0x...)"
-                    required: true
-                    TextField { id: programIdField_hidden; visible: false }
-                }
 
                 // Actual fields using property aliases trick — use direct TextFields
                 Text { text: "Multisig Program ID *"; color: Theme.palette.textSecondary; font.pixelSize: 12 }
