@@ -284,7 +284,9 @@ void LezMultisigModule::executeAsync(const QString& argsJson) {
 }
 
 void LezMultisigModule::createMultisigAsync(const QString& argsJson) {
+    qInfo() << "createMultisigAsync called with:" << argsJson;
     const QString merged = mergeWithDefaults(argsJson);
+    qInfo() << "Merged args:" << merged;
     QFuture<QString> future = QtConcurrent::run([merged]() -> QString {
         const QByteArray utf8 = merged.toUtf8();
         char* raw = lez_multisig_create(utf8.constData());
