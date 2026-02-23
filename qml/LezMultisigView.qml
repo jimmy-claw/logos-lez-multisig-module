@@ -21,7 +21,7 @@ Item {
 
     // Multisig config — populated from getState or user input
     property string multisigCreateKey:     ""
-    property string multisigProgramId:     "7f92d57b20a63264d90119c6322f7d8058ecf2b14f462d29d1ae6cf42e684006"
+    property string multisigProgramId:     "1e6b3b2014f1100e4426ea0a5e2f719366b50fa15292f4a5487fffc4a0de6b7c"
     property int    multisigThreshold:     0
     property int    multisigMemberCount:   0
 
@@ -262,7 +262,7 @@ Item {
                             anchors { fill: parent; leftMargin: 6; rightMargin: 6 }
                             background: Item {}
                             color: Theme.palette.text
-                            text: "7f92d57b20a63264d90119c6322f7d8058ecf2b14f462d29d1ae6cf42e684006"; placeholderText: "multisig program id (hex64)"
+                            text: "1e6b3b2014f1100e4426ea0a5e2f719366b50fa15292f4a5487fffc4a0de6b7c"; placeholderText: "multisig program id (hex64)"
                             placeholderTextColor: Theme.palette.textTertiary
                             font { pixelSize: 12; family: "monospace" }
                             onTextChanged: root.multisigProgramId = text.trim()
