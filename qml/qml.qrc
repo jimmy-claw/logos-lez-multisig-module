@@ -7,5 +7,7 @@
         <file>ProposalDetail.qml</file>
         <file>Theme.qml</file>
         <file>qmldir</file>
+        <file>LezMultisig/Theme.qml</file>
+        <file>LezMultisig/qmldir</file>
     </qresource>
 </RCC>
