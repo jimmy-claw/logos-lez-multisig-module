@@ -61,6 +61,25 @@ Item {
         }
     }
 
+
+    // ── Load known multisigs from persistence ────────────────────────────────
+    function loadKnownMultisigs() {
+        if (!hasModule) return
+        knownMultisigsModel.clear()
+        try {
+            var arr = JSON.parse(lezMultisigModule.loadMultisigs())
+            for (var i = 0; i < arr.length; i++) {
+                knownMultisigsModel.append({
+                    "displayName": arr[i].name + " (" + arr[i].create_key.substring(0, 8) + "...)",
+                    "programId": arr[i].program_id,
+                    "createKey": arr[i].create_key
+                })
+            }
+        } catch(e) {
+            console.warn("Failed to load known multisigs:", e)
+        }
+    }
+
     // ── Fetch multisig state ─────────────────────────────────────────────────
     function refreshState() {
         if (!hasModule) return
@@ -74,6 +93,18 @@ Item {
             }
         } catch(e) {
             console.warn("getState parse error:", e)
+        }
+    }
+
+    // ── Auto-navigate timer after multisig creation ──────────────────────────
+    Timer {
+        id: autoNavigateTimer
+        interval: 1500
+        repeat: false
+        onTriggered: {
+            root.currentView = 0
+            refreshState()
+            refreshProposals()
         }
     }
 
@@ -104,8 +135,12 @@ Item {
             } catch(e) {
                 createForm.submitResult = "Multisig created!"
             }
-            refreshState()
-            refreshProposals()
+            // Save to known multisigs
+            if (hasModule && multisigCreateKey.length > 0) {
+                lezMultisigModule.saveMultisig("Multisig " + multisigCreateKey.substring(0, 8), multisigProgramId, multisigCreateKey)
+                loadKnownMultisigs()
+            }
+            autoNavigateTimer.start()
         }
         function onProposalCreated(resultJson) {
             proposeForm.submitting = false
@@ -233,6 +268,47 @@ Item {
                 anchors { left: parent.left; right: parent.right; top: parent.top; margins: 12 }
                 spacing: 6
 
+                // Known multisigs selector
+                RowLayout {
+                    Layout.fillWidth: true; spacing: 8
+                    Text { text: "Known:"; color: Theme.palette.textTertiary; font.pixelSize: 12 }
+                    Rectangle {
+                        Layout.fillWidth: true; height: 28; radius: 4
+                        color: Theme.palette.backgroundTertiary
+                        border { color: Theme.palette.borderSecondary; width: 1 }
+                        ComboBox {
+                            id: knownMultisigSelector
+                            anchors.fill: parent
+                            model: ListModel { id: knownMultisigsModel }
+                            textRole: "displayName"
+                            font.pixelSize: 12
+
+                            background: Rectangle {
+                                color: "transparent"
+                            }
+                            contentItem: Text {
+                                text: knownMultisigSelector.displayText || "Select a multisig..."
+                                color: Theme.palette.text
+                                font { pixelSize: 12; family: "monospace" }
+                                verticalAlignment: Text.AlignVCenter
+                                leftPadding: 6
+                                elide: Text.ElideRight
+                            }
+
+                            onActivated: function(index) {
+                                if (index < 0) return
+                                var item = knownMultisigsModel.get(index)
+                                if (!item) return
+                                progIdField.text = item.programId
+                                createKeyField.text = item.createKey
+                                root.multisigProgramId = item.programId
+                                root.multisigCreateKey = item.createKey
+                                refreshState()
+                                refreshProposals()
+                            }
+                        }
+                    }
+                }
                 RowLayout {
                     Layout.fillWidth: true; spacing: 8
                     Text { text: "Sequencer:"; color: Theme.palette.textTertiary; font.pixelSize: 12 }
@@ -441,6 +517,11 @@ Item {
             if (!hasModule) { submitError = "Module not loaded"; submitting = false; return }
             lezMultisigModule.createMultisigAsync(argsJson)
         }
+    }
+
+    // ── Load known multisigs on startup ─────────────────────────────────────
+    Component.onCompleted: {
+        loadKnownMultisigs()
     }
 
     // ── View: Propose ────────────────────────────────────────────────────────

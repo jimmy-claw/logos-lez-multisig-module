@@ -15,6 +15,9 @@ extern "C" {
 #include <QVariantList>
 #include <QQmlEngine>
 #include <QFutureWatcher>
+#include <QJsonArray>
+#include <QDir>
+#include <QStandardPaths>
 
 #include "registry_bridge.h"
 
@@ -69,6 +72,11 @@ public:
     Q_INVOKABLE RegistryBridge* registryBridge() const { return m_registryBridge; }
     Q_INVOKABLE ProposalListModel* proposalModel() const { return m_model; }
 
+    // ── Multisig persistence ─────────────────────────────────────────────────
+    Q_INVOKABLE void saveMultisig(const QString& name, const QString& programId, const QString& createKey);
+    Q_INVOKABLE QString loadMultisigs();
+    Q_INVOKABLE void deleteMultisig(const QString& createKey);
+
 signals:
     void eventResponse(const QString& eventName, const QVariantList& data);
     void proposalsRefreshed(const QString& resultJson);
@@ -96,4 +104,5 @@ private:
 
     QString mergeWithDefaults(const QString& argsJson) const;
     void emitEvent(const QString& eventName, const QVariantList& data);
+    static QString multisigsFilePath();
 };
