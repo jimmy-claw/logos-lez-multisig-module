@@ -432,7 +432,7 @@ Item {
         visible: root.currentView === 2
         anchors.fill: parent
 
-        onCancelled: root.currentView = 0
+        onCancelled: { root.currentView = 0 }
         onSubmitRequested: function(argsJson) {
             if (!hasModule) { submitError = "Module not loaded"; submitting = false; return }
             lezMultisigModule.createMultisigAsync(argsJson)
@@ -445,7 +445,7 @@ Item {
         visible: root.currentView === 3
         anchors.fill: parent
 
-        onCancelled: root.currentView = 0
+        onCancelled: { root.currentView = 0 }
         onSubmitRequested: function(argsJson) {
             if (!hasModule) { submitError = "Module not loaded"; submitting = false; return }
             lezMultisigModule.proposeAsync(argsJson)

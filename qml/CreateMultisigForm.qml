@@ -53,7 +53,7 @@ Item {
             Button {
                 text: "✕ Cancel"
                 flat: true
-                onClicked: root.cancelled()
+                onClicked: { root.submitting = false; root.cancelled() }
                 contentItem: Text {
                     text: parent.text
                     color: Theme.palette.textSecondary
