@@ -5,51 +5,74 @@ import QtQuick.Layouts 1.15
 Item {
     id: root
 
-    property int currentView: 0  // 0=proposals, 1=detail, 2=create, 3=propose
+    property int currentView: 0
+
+    Rectangle {
+        anchors.fill: parent
+        color: Theme.palette.background
+    }
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: 20
-        spacing: 16
+        anchors.margins: 24
+        spacing: 20
 
         // Header
         RowLayout {
             Layout.fillWidth: true
             spacing: 12
 
+            // Lock icon as styled text instead of emoji
+            Rectangle {
+                width: 36; height: 36; radius: 8
+                color: Qt.rgba(Theme.palette.primary.r, Theme.palette.primary.g, Theme.palette.primary.b, 0.15)
+                border { color: Theme.palette.primary; width: 1 }
+                Text {
+                    anchors.centerIn: parent
+                    text: "\uD83D\uDD10"
+                    font.pixelSize: 18
+                }
+            }
+
             Text {
-                text: "🔐 LEZ Multisig"
-                font.pixelSize: 24
-                font.bold: true
-                color: "#ffffff"
+                text: "LEZ Multisig"
+                font { pixelSize: 24; bold: true }
+                color: Theme.palette.text
             }
 
             Item { Layout.fillWidth: true }
 
             Rectangle {
-                width: createBtn.width + 20; height: 36; radius: 8
-                color: "#FF8800"
+                width: createBtn.width + 24; height: 36; radius: 8
+                color: Theme.palette.primary
                 Text {
                     id: createBtn; anchors.centerIn: parent
-                    text: "+ New Multisig"; color: "#ffffff"; font.pixelSize: 14; font.bold: true
+                    text: "+ New Multisig"; color: "#ffffff"; font { pixelSize: 14; bold: true }
+                }
+                MouseArea {
+                    anchors.fill: parent; cursorShape: Qt.PointingHandCursor
+                    hoverEnabled: true
+                    onContainsMouseChanged: parent.color = containsMouse ? Theme.palette.primaryHover : Theme.palette.primary
                 }
             }
         }
 
         // Info bar
         Rectangle {
-            Layout.fillWidth: true; height: 40; radius: 8; color: "#262626"
+            Layout.fillWidth: true; height: 44; radius: 8
+            color: Theme.palette.backgroundSecondary
+            border { color: Theme.palette.borderSecondary; width: 1 }
             RowLayout {
                 anchors.fill: parent; anchors.leftMargin: 16; anchors.rightMargin: 16
-                Text { text: "Threshold: 2 of 3"; color: "#A4A4A4"; font.pixelSize: 13 }
+                Text { text: "Threshold: 2 of 3"; color: Theme.palette.textSecondary; font.pixelSize: 13 }
                 Item { Layout.fillWidth: true }
-                Text { text: "Members: 3"; color: "#A4A4A4"; font.pixelSize: 13 }
+                Text { text: "Members: 3"; color: Theme.palette.textSecondary; font.pixelSize: 13 }
                 Item { width: 20 }
-                Text { text: "Proposals: 3"; color: "#49F563"; font.pixelSize: 13 }
+                Text { text: "Proposals: 3"; color: Theme.palette.success; font { pixelSize: 13; bold: true } }
             }
         }
 
-        Rectangle { Layout.fillWidth: true; height: 1; color: "#2B303B" }
+        Rectangle { Layout.fillWidth: true; height: 1; color: Theme.palette.borderSecondary }
 
         // Proposal list
         Repeater {
@@ -70,8 +93,8 @@ Item {
 
         Text {
             Layout.alignment: Qt.AlignHCenter
-            text: "Powered by Logos · LEZ Multisig v0.1.0"
-            color: "#555555"; font.pixelSize: 11
+            text: "Powered by Logos \u00b7 LEZ Multisig v0.1.0"
+            color: Theme.palette.textTertiary; font.pixelSize: 11
         }
     }
 

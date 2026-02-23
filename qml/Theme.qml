@@ -5,20 +5,20 @@ QtObject {
     id: theme
 
     readonly property QtObject palette: QtObject {
-        readonly property color background:          "#171717"
-        readonly property color backgroundSecondary: "#262626"
-        readonly property color backgroundTertiary:  "#1C1C1C"
+        readonly property color background:          "#1a1a2e"
+        readonly property color backgroundSecondary: "#16213e"
+        readonly property color backgroundTertiary:  "#0f3460"
         readonly property color borderSecondary:     "#2B303B"
-        readonly property color primary:             "#FF8800"
-        readonly property color primaryHover:        "#E07A00"
-        readonly property color primaryPressed:      "#CC6F00"
+        readonly property color primary:             "#f5a623"
+        readonly property color primaryHover:        "#e0951e"
+        readonly property color primaryPressed:      "#cc8619"
         readonly property color text:                "#FFFFFF"
         readonly property color textSecondary:       "#A4A4A4"
-        readonly property color textTertiary:        "#969696"
+        readonly property color textTertiary:        "#707070"
         readonly property color success:             "#4CAF50"
         readonly property color error:               "#F44336"
         readonly property color info:                "#2196F3"
-        readonly property color warning:             "#FF8800"
+        readonly property color warning:             "#f5a623"
     }
 
     readonly property QtObject spacing: QtObject {
