@@ -21,7 +21,7 @@ Item {
 
     // Multisig config — populated from getState or user input
     property string multisigCreateKey:     ""
-    property string multisigProgramId:     ""
+    property string multisigProgramId:     "7f92d57b20a63264d90119c6322f7d8058ecf2b14f462d29d1ae6cf42e684006"
     property int    multisigThreshold:     0
     property int    multisigMemberCount:   0
 
@@ -241,7 +241,7 @@ Item {
                             anchors { fill: parent; leftMargin: 6; rightMargin: 6 }
                             background: Item {}
                             color: Theme.palette.text
-                            text: hasRealModel ? lezMultisigModel.sequencerUrl() : "http://localhost:9000"
+                            text: hasRealModel ? lezMultisigModel.sequencerUrl() : "http://localhost:3040"
                             font { pixelSize: 12; family: "monospace" }
                         }
                     }
@@ -258,7 +258,7 @@ Item {
                             anchors { fill: parent; leftMargin: 6; rightMargin: 6 }
                             background: Item {}
                             color: Theme.palette.text
-                            placeholderText: "multisig program id (hex64)"
+                            text: "7f92d57b20a63264d90119c6322f7d8058ecf2b14f462d29d1ae6cf42e684006"; placeholderText: "multisig program id (hex64)"
                             placeholderTextColor: Theme.palette.textTertiary
                             font { pixelSize: 12; family: "monospace" }
                             onTextChanged: root.multisigProgramId = text.trim()

@@ -15,7 +15,7 @@
 // ── Constructor / Destructor ──────────────────────────────────────────────────
 
 LezMultisigModule::LezMultisigModule()
-    : m_defaultSequencerUrl(QStringLiteral("http://localhost:9000"))
+    : m_defaultSequencerUrl(QStringLiteral("http://localhost:3040"))
     , m_defaultWalletPath(QString())
     , m_refreshWatcher(new QFutureWatcher<QString>(this))
     , m_actionWatcher(new QFutureWatcher<QString>(this))

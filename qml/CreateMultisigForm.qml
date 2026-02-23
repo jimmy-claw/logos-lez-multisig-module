@@ -128,7 +128,7 @@ Item {
                         anchors { fill: parent; leftMargin: 8; rightMargin: 8 }
                         background: Item {}
                         color: Theme.palette.text
-                        placeholderText: "64 hex chars"
+                        text: "7f92d57b20a63264d90119c6322f7d8058ecf2b14f462d29d1ae6cf42e684006"; placeholderText: "64 hex chars"
                         placeholderTextColor: Theme.palette.textTertiary
                         font { pixelSize: 13; family: "monospace" }
                     }
