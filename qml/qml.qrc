@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource prefix="/lez-multisig">
         <file>LezMultisigView.qml</file>
         <file>CreateMultisigForm.qml</file>
         <file>ProposeForm.qml</file>
