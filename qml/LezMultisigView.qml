@@ -379,7 +379,7 @@ Item {
 
         Text {
             Layout.alignment: Qt.AlignHCenter
-            text: "Powered by Logos · LEZ Multisig" + (hasModule ? " v" + lezMultisigModule.version() : " v0.1.0")
+            text: "Powered by Logos · LEZ Multisig" + (hasModule && typeof lezMultisigModule.version === "function" ? " v" + lezMultisigModule.version() : " v0.1.0")
             color: Theme.palette.textTertiary; font.pixelSize: 11
         }
     }
