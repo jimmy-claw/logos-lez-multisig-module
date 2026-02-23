@@ -173,7 +173,7 @@ pkgs.stdenv.mkDerivation rec {
     fi
 
     # Copy QML files for the app to find
-    cp ${src}/qml/*.qml "$out/qml/" 2>/dev/null || true
+    cp -r ${src}/qml/* "$out/qml/" 2>/dev/null || true
 
     runHook postInstall
   '';
