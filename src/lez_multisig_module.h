@@ -38,7 +38,7 @@ public:
 
     // ── PluginInterface ──────────────────────────────────────────────────────
 
-    [[nodiscard]] QString name() const override { return QStringLiteral("liblez_multisig_module"); }
+    [[nodiscard]] QString name() const override { return QStringLiteral("lez_multisig_module"); }
     [[nodiscard]] QString version() const override;
 
     // ── ILezMultisigModule lifecycle ─────────────────────────────────────────
