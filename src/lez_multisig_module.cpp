@@ -104,6 +104,7 @@ void LezMultisigModule::initLogos(LogosAPI* logosAPIInstance) {
 
     // Create the proposal list model (parented to this module)
     m_model = new ProposalListModel(this);
+    m_model->setObjectName(QStringLiteral("proposalListModel"));
     m_model->setSequencerUrl(m_defaultSequencerUrl);
 
     if (!logosAPI) {

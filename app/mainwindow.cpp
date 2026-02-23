@@ -37,9 +37,10 @@ void MainWindow::setupUi()
     QString pluginPath = QCoreApplication::applicationDirPath() + "/../modules/liblez_multisig_module" + pluginExtension;
     QPluginLoader loader(pluginPath);
 
+    QObject* pluginObj = nullptr;
     if (loader.load()) {
-        QObject* plugin = loader.instance();
-        if (plugin) {
+        pluginObj = loader.instance();
+        if (pluginObj) {
             qInfo() << "LEZ Multisig module plugin loaded successfully";
         }
     } else {
@@ -61,9 +62,21 @@ void MainWindow::setupUi()
         qmlUrl = QUrl("qrc:/qml/LezMultisigView.qml");
     }
 
-    // Note: lezMultisigModule and lezMultisigModel context properties
-    // are set by the plugin when loaded via logoscore.
-    // In standalone mode, QML falls back to demo data gracefully.
+    // Expose plugin to QML as context properties
+    if (pluginObj) {
+        m_quickWidget->engine()->rootContext()->setContextProperty(
+            QStringLiteral("lezMultisigModule"), pluginObj);
+        // Find the ProposalListModel child object
+        QObject* model = pluginObj->findChild<QObject*>(QStringLiteral("proposalListModel"));
+        if (model) {
+            m_quickWidget->engine()->rootContext()->setContextProperty(
+                QStringLiteral("lezMultisigModel"), model);
+            qInfo() << "ProposalListModel exposed to QML";
+        } else {
+            qInfo() << "ProposalListModel not found - QML will use demo data";
+        }
+        qInfo() << "Context properties set for QML";
+    }
 
     m_quickWidget->setSource(qmlUrl);
 
