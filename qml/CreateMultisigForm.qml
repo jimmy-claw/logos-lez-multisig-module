@@ -206,6 +206,22 @@ Item {
                     }
                 }
 
+                Text { text: "Account / Signer (hex64) *"; color: Theme.palette.textSecondary; font.pixelSize: 12 }
+                Rectangle {
+                    Layout.fillWidth: true; height: 36; radius: Theme.spacing.tiny
+                    color: Theme.palette.backgroundSecondary
+                    border { color: accountField.activeFocus ? Theme.palette.primary : Theme.palette.borderSecondary; width: 1 }
+                    TextField {
+                        id: accountField
+                        anchors { fill: parent; leftMargin: 8; rightMargin: 8 }
+                        background: Item {}
+                        color: Theme.palette.text
+                        placeholderText: "signer account id (64 hex chars)"
+                        placeholderTextColor: Theme.palette.textTertiary
+                        font { pixelSize: 13; family: "monospace" }
+                    }
+                }
+
                 Text { text: "Wallet Path (optional)"; color: Theme.palette.textSecondary; font.pixelSize: 12 }
                 Rectangle {
                     Layout.fillWidth: true; height: 36; radius: Theme.spacing.tiny
@@ -277,6 +293,9 @@ Item {
                         }
                         if (walletPathField.text.length > 0) {
                             args["wallet_path"] = walletPathField.text.trim()
+                        }
+                        if (accountField.text.length > 0) {
+                            args["account"] = accountField.text.trim()
                         }
 
                         root.submitting = true

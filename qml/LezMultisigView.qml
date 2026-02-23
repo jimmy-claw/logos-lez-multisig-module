@@ -90,6 +90,10 @@ Item {
         function onActionFailed(error) {
             detailView.actioning   = false
             detailView.actionError = error
+            createForm.submitting  = false
+            createForm.submitError = error
+            proposeForm.submitting = false
+            proposeForm.submitError = error
         }
         function onMultisigCreated(resultJson) {
             createForm.submitting = false
