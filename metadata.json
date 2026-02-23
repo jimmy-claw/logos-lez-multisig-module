@@ -1,16 +1,26 @@
 {
-  "name": "liblez_multisig_module",
+  "name": "lez_multisig_module",
   "version": "0.1.0",
-  "description": "LEZ Multisig — M-of-N governance with registry integration",
+  "description": "LEZ Multisig \u2014 M-of-N governance with registry integration",
   "author": "jimmy-claw",
   "type": "blockchain",
-  "dependencies": ["capability_module"],
-  "include": ["liblez_multisig_ffi.so", "liblez_multisig_ffi.dylib", "liblez_registry_ffi.so", "liblez_registry_ffi.dylib"],
+  "dependencies": [
+    "capability_module"
+  ],
+  "include": [
+    "liblez_multisig_ffi.so",
+    "liblez_multisig_ffi.dylib",
+    "liblez_registry_ffi.so",
+    "liblez_registry_ffi.dylib"
+  ],
   "ui": {
     "component": "LezMultisigView",
     "qmlUrl": "qrc:/lez-multisig/LezMultisigView.qml",
-    "contextProperties": ["lezMultisigModel", "lezMultisigModule"],
+    "contextProperties": [
+      "lezMultisigModel",
+      "lezMultisigModule"
+    ],
     "title": "LEZ Multisig",
-    "icon": "🔐"
+    "icon": "\ud83d\udd10"
   }
 }
