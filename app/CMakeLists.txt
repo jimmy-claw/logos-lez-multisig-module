@@ -34,6 +34,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_executable(logos-lez-multisig-app
     main.cpp
+    mainwindow.cpp
+    mainwindow.h
 )
 
 target_link_libraries(logos-lez-multisig-app PRIVATE

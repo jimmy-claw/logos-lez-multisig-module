@@ -1,3 +1,5 @@
+#include "mainwindow.h"
+
 #include <QApplication>
 #include <QDir>
 #include <QDebug>
@@ -47,6 +49,9 @@ int main(int argc, char *argv[])
             qInfo() << "  -" << loadedPlugins[i];
         }
     }
+
+    MainWindow window;
+    window.show();
 
     std::cout << "LEZ Multisig App running — close window to exit." << std::endl;
 
