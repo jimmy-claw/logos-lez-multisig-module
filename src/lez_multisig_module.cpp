@@ -22,6 +22,13 @@ LezMultisigModule::LezMultisigModule()
     , m_createWatcher(new QFutureWatcher<QString>(this))
     , m_proposeWatcher(new QFutureWatcher<QString>(this))
 {
+    // Create model early so standalone app can find it
+    if (!m_model) {
+        m_model = new ProposalListModel(this);
+        m_model->setObjectName(QStringLiteral("proposalListModel"));
+        m_model->setSequencerUrl(m_defaultSequencerUrl);
+    }
+
     // Proposals refresh completion
     connect(m_refreshWatcher, &QFutureWatcher<QString>::finished, this, [this]() {
         const QString result = m_refreshWatcher->result();
@@ -103,9 +110,11 @@ void LezMultisigModule::initLogos(LogosAPI* logosAPIInstance) {
     logosAPI = logosAPIInstance;
 
     // Create the proposal list model (parented to this module)
-    m_model = new ProposalListModel(this);
-    m_model->setObjectName(QStringLiteral("proposalListModel"));
-    m_model->setSequencerUrl(m_defaultSequencerUrl);
+    if (!m_model) {
+        m_model = new ProposalListModel(this);
+        m_model->setObjectName(QStringLiteral("proposalListModel"));
+        m_model->setSequencerUrl(m_defaultSequencerUrl);
+    }
 
     if (!logosAPI) {
         qWarning() << "LezMultisigModule: initLogos called with null LogosAPI";
