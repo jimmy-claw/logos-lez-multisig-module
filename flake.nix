@@ -47,7 +47,7 @@
           };
 
           app = import ./nix/app.nix {
-            inherit pkgs common src logosLiblogos logosSdk logosCapabilityModule lezMultisigFfi;
+            inherit pkgs common src logosLiblogos logosSdk logosCapabilityModule lezMultisigFfi lezRegistryFfi;
             lezMultisigModule = lib;
           };
         in
