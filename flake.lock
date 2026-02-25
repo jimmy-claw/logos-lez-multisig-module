@@ -38,17 +38,17 @@
       },
       "locked": {
         "dir": "lez-multisig-ffi",
-        "lastModified": 1772007798,
-        "narHash": "sha256-xY2xbuPE693Y1fQ00y1tXxJkkshxIKbWlPZ4+2DRtHc=",
+        "lastModified": 1772014708,
+        "narHash": "sha256-rImGqowH0WKm9vpHhVljO7JPhBZQhUpaT1N1X0gNw2w=",
         "owner": "jimmy-claw",
         "repo": "lez-multisig",
-        "rev": "d1a4f88dc70ec8e739cfbd51d7ffeaee2ab2a997",
+        "rev": "89b500d374c3cf0278a1e54d3fc037b3fa444d59",
         "type": "github"
       },
       "original": {
         "dir": "lez-multisig-ffi",
         "owner": "jimmy-claw",
-        "ref": "jimmy/regen-multisig-ffi-20",
+        "ref": "jimmy/nssa-framework-migration",
         "repo": "lez-multisig",
         "type": "github"
       }
