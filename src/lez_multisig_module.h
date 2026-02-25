@@ -32,7 +32,9 @@ class ProposalListModel;
  */
 class LezMultisigModule final : public QObject, public PluginInterface, public ILezMultisigModule {
     Q_OBJECT
+#ifndef LEZ_MULTISIG_UI_BUILD
     Q_PLUGIN_METADATA(IID ILezMultisigModule_iid FILE LEZ_MULTISIG_MODULE_METADATA_FILE)
+#endif
     Q_INTERFACES(PluginInterface)
 
 public:

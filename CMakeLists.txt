@@ -117,3 +117,71 @@ install(TARGETS ${PLUGIN_TARGET}
     PUBLIC_HEADER   DESTINATION include
 )
 install(FILES ${LEZ_MULTISIG_INCLUDE}/lez_multisig.h DESTINATION include)
+
+# ── UI Plugin target (IComponent for logos-app-poc) ──────────────────────────
+option(BUILD_UI_PLUGIN "Build the IComponent UI plugin for logos-app-poc" OFF)
+
+if(BUILD_UI_PLUGIN)
+    find_package(Qt6Widgets      REQUIRED)
+    find_package(Qt6QuickWidgets REQUIRED)
+
+    # component-interfaces (IComponent.h)
+    find_package(component-interfaces QUIET)
+    if(NOT component-interfaces_FOUND)
+        add_library(component-interfaces INTERFACE)
+        target_include_directories(component-interfaces INTERFACE
+            "${CMAKE_CURRENT_SOURCE_DIR}/interfaces"
+        )
+    endif()
+
+    set(UI_TARGET lez_multisig_ui)
+
+    add_library(${UI_TARGET} SHARED
+        src/MultisigUIComponent.cpp
+        src/lez_multisig_module.cpp
+        src/proposal_list_model.cpp
+        src/registry_bridge.cpp
+        qml/qml.qrc
+    )
+
+    target_include_directories(${UI_TARGET} PRIVATE
+        src
+        "${LEZ_MULTISIG_INCLUDE}"
+        "${LEZ_REGISTRY_INCLUDE}"
+    )
+
+    target_compile_definitions(${UI_TARGET} PRIVATE
+        LEZ_MULTISIG_UI_BUILD
+        LEZ_MULTISIG_UI_METADATA_FILE="${CMAKE_CURRENT_SOURCE_DIR}/ui_metadata.json"
+    )
+
+    target_link_libraries(${UI_TARGET} PRIVATE
+        Qt6::Core
+        Qt6::Widgets
+        Qt6::Quick
+        Qt6::Qml
+        Qt6::QuickWidgets
+        Qt6::RemoteObjects
+        Qt6::Concurrent
+        logos_cpp_sdk
+        logos_core
+        lez_multisig_ffi
+        component-interfaces
+    )
+
+    if(APPLE)
+        set_target_properties(${UI_TARGET} PROPERTIES
+            BUILD_RPATH   "@loader_path"
+            INSTALL_RPATH "@loader_path"
+        )
+    elseif(UNIX)
+        set_target_properties(${UI_TARGET} PROPERTIES
+            BUILD_RPATH   "$ORIGIN"
+            INSTALL_RPATH "$ORIGIN"
+        )
+    endif()
+
+    install(TARGETS ${UI_TARGET}
+        LIBRARY DESTINATION lib
+    )
+endif()

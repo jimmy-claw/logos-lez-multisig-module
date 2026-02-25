@@ -50,9 +50,13 @@
             inherit pkgs common src logosLiblogos logosSdk logosCapabilityModule lezMultisigFfi lezRegistryFfi;
             lezMultisigModule = lib;
           };
+
+          ui = import ./nix/ui.nix {
+            inherit pkgs common src logosSdk logosLiblogos lezMultisigFfi lezRegistryFfi;
+          };
         in
         {
-          inherit lib app;
+          inherit lib app ui;
           default = lib;
         }
       );
