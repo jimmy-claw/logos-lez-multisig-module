@@ -37,16 +37,15 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1772123671,
+        "lastModified": 1772127532,
         "narHash": "sha256-wxnGmugVni2fTgytdTUXcFsKzc+azguTDqEwKNXp+1o=",
         "owner": "jimmy-claw",
         "repo": "lez-multisig-framework",
-        "rev": "7f96e3ecd124c945de23a759ea146b8f7c7fc3bb",
+        "rev": "dc205880e13e8f972932b5241312eb13679567af",
         "type": "github"
       },
       "original": {
         "owner": "jimmy-claw",
-        "ref": "jimmy/add-nix-flake",
         "repo": "lez-multisig-framework",
         "type": "github"
       }
