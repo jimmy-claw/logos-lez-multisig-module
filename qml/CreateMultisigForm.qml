@@ -286,7 +286,7 @@ Item {
                         }
 
                         var args = {
-                            "multisig_program_id": programIdField.text.trim(),
+                            "program_id_hex": programIdField.text.trim(),
                             "create_key":          createKeyField.text.trim(),
                             "threshold":           parseInt(thresholdField.text) || 2,
                             "members":             lines
