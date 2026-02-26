@@ -2,11 +2,11 @@
   "nodes": {
     "crane": {
       "locked": {
-        "lastModified": 1771796463,
-        "narHash": "sha256-9bCDuUzpwJXcHMQYMS1yNuzYMmKO/CCwCexpjWOl62I=",
+        "lastModified": 1772080396,
+        "narHash": "sha256-84W9UNtSk9DNMh43WBkOjpkbfODlmg+RDi854PnNgLE=",
         "owner": "ipetkov",
         "repo": "crane",
-        "rev": "3d3de3313e263e04894f284ac18177bd26169bad",
+        "rev": "8525580bc0316c39dbfa18bd09a1331e98c9e463",
         "type": "github"
       },
       "original": {
@@ -37,19 +37,17 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "dir": "lez-multisig-ffi",
-        "lastModified": 1772014708,
-        "narHash": "sha256-rImGqowH0WKm9vpHhVljO7JPhBZQhUpaT1N1X0gNw2w=",
+        "lastModified": 1772123671,
+        "narHash": "sha256-wxnGmugVni2fTgytdTUXcFsKzc+azguTDqEwKNXp+1o=",
         "owner": "jimmy-claw",
-        "repo": "lez-multisig",
-        "rev": "89b500d374c3cf0278a1e54d3fc037b3fa444d59",
+        "repo": "lez-multisig-framework",
+        "rev": "7f96e3ecd124c945de23a759ea146b8f7c7fc3bb",
         "type": "github"
       },
       "original": {
-        "dir": "lez-multisig-ffi",
         "owner": "jimmy-claw",
-        "ref": "jimmy/nssa-framework-migration",
-        "repo": "lez-multisig",
+        "ref": "jimmy/add-nix-flake",
+        "repo": "lez-multisig-framework",
         "type": "github"
       }
     },
@@ -513,11 +511,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1771988922,
-        "narHash": "sha256-Fc6FHXtfEkLtuVJzd0B6tFYMhmcPLuxr90rWfb/2jtQ=",
+        "lastModified": 1772075164,
+        "narHash": "sha256-93XcvAt+6p7aAq1ERlxD2T17zLGoYGo64KJYasGcpgc=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "f4443dc3f0b6c5e6b77d923156943ce816d1fcb9",
+        "rev": "07601339b15fa6810541c0e7dc2f3664d92a7ad0",
         "type": "github"
       },
       "original": {
