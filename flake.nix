@@ -8,7 +8,7 @@
     logos-cpp-sdk.url = "github:logos-co/logos-cpp-sdk";
     logos-capability-module.url = "github:logos-co/logos-capability-module";
 
-    lez-multisig-ffi.url = "github:jimmy-claw/lez-multisig-framework/jimmy/add-nix-flake";
+    lez-multisig-ffi.url = "github:jimmy-claw/lez-multisig-framework";
     lez-registry-ffi.url = "github:jimmy-claw/lez-registry?dir=lez-registry-ffi";
   };
 
