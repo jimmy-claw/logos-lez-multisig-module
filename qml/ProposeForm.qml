@@ -268,6 +268,31 @@ Item {
         }
     }
 
+
+    // ── Inline registry lookup timer ─────────────────────────────────────────
+    Timer {
+        id: registryLookupTimer
+        interval: 500
+        repeat: false
+        onTriggered: {
+            var pid = targetProgIdField.text.trim()
+            if (pid.length !== 64) return
+            if (typeof lezRegistryBridge === "undefined" || !lezRegistryBridge || !lezRegistryBridge.isLoaded) {
+                inlineProgramNameLabel.text = ""
+                inlineProgramDescLabel.text = ""
+                return
+            }
+            var prog = lezRegistryBridge.getProgramById(root.sequencerUrl, pid)
+            if (prog && prog.name) {
+                inlineProgramNameLabel.text = prog.name + (prog.version ? "  v" + prog.version : "")
+                inlineProgramDescLabel.text = prog.description || ""
+            } else {
+                inlineProgramNameLabel.text = ""
+                inlineProgramDescLabel.text = lezRegistryBridge.lastError() || ""
+            }
+        }
+    }
+
     // ── Main layout ───────────────────────────────────────────────────────────
     ColumnLayout {
         anchors { fill: parent; margins: Theme.spacing.large }
@@ -400,6 +425,51 @@ Item {
                         placeholderText: "64 hex chars — or use Browse Registry above"
                         placeholderTextColor: Theme.palette.textTertiary
                         font { pixelSize: 13; family: "monospace" }
+                        onTextChanged: {
+                            inlineProgramNameLabel.text = ""
+                            inlineProgramDescLabel.text = ""
+                            if (text.trim().length === 64) {
+                                registryLookupTimer.restart()
+                            } else {
+                                registryLookupTimer.stop()
+                            }
+                        }
+                    }
+                }
+
+                // ── Inline registry lookup result ─────────────────────────────
+                Rectangle {
+                    id: inlineLookupResult
+                    visible: inlineProgramNameLabel.text.length > 0 || inlineProgramDescLabel.text.length > 0
+                    Layout.fillWidth: true
+                    height: inlineLookupCol.implicitHeight + 12
+                    radius: Theme.spacing.tiny
+                    color: inlineProgramNameLabel.text.length > 0 ? "#1a3a1a" : "#2a1a1a"
+                    border {
+                        color: inlineProgramNameLabel.text.length > 0 ? Theme.palette.success : Theme.palette.error
+                        width: 1
+                    }
+                    ColumnLayout {
+                        id: inlineLookupCol
+                        anchors { left: parent.left; right: parent.right; top: parent.top; margins: 8 }
+                        spacing: 2
+                        Text {
+                            id: inlineProgramNameLabel
+                            text: ""
+                            color: Theme.palette.success
+                            font { pixelSize: 13; bold: true }
+                            visible: text.length > 0
+                            Layout.fillWidth: true
+                        }
+                        Text {
+                            id: inlineProgramDescLabel
+                            text: ""
+                            color: inlineProgramNameLabel.text.length > 0 ? Theme.palette.textSecondary : Theme.palette.error
+                            font.pixelSize: 11
+                            visible: text.length > 0
+                            wrapMode: Text.WordWrap
+                            Layout.fillWidth: true
+                        }
                     }
                 }
 
