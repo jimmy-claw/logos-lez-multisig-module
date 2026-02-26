@@ -97,7 +97,7 @@ QHash<int, QByteArray> ProposalListModel::roleNames() const {
 void ProposalListModel::refresh() {
     if (m_loading) return;
     if (m_createKey.isEmpty() || m_multisigProgramId.isEmpty()) {
-        setError(QStringLiteral("create_key and multisig_program_id must be set before refreshing"));
+        setError(QStringLiteral("create_key and program_id_hex must be set before refreshing"));
         return;
     }
     setLoading(true);
@@ -111,7 +111,7 @@ void ProposalListModel::refresh() {
     QFuture<QString> future = QtConcurrent::run([seqUrl, createKey, progId, wallet]() -> QString {
         QJsonObject obj;
         obj[QLatin1String("sequencer_url")]       = seqUrl;
-        obj[QLatin1String("multisig_program_id")] = progId;
+        obj[QLatin1String("program_id_hex")] = progId;
         obj[QLatin1String("create_key")]           = createKey;
         if (!wallet.isEmpty()) {
             obj[QLatin1String("wallet_path")] = wallet;

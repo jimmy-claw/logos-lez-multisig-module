@@ -717,7 +717,7 @@ Item {
                             .filter(function(n){ return !isNaN(n) })
 
                         var args = {
-                            "multisig_program_id":     root.multisigProgramId,
+                            "program_id_hex":     root.multisigProgramId,
                             "create_key":              root.createKey,
                             "account":                 accountField.text.trim(),
                             "target_program_id":       targetProgIdField.text.trim(),

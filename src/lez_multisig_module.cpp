@@ -75,7 +75,7 @@ LezMultisigModule::LezMultisigModule()
         {
             const QString createKey = root.value(QLatin1String("create_key")).toString();
             if (!createKey.isEmpty()) {
-                const QString progId = root.value(QLatin1String("multisig_program_id")).toString();
+                const QString progId = root.value(QLatin1String("program_id_hex")).toString();
                 saveMultisig(QStringLiteral("Multisig ") + createKey.left(8), progId, createKey);
             }
         }

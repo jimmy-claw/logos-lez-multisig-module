@@ -38,7 +38,7 @@ Item {
     function commonArgs() {
         var args = {}
         if (multisigProgramId.length > 0)
-            args["multisig_program_id"] = multisigProgramId
+            args["program_id_hex"] = multisigProgramId
         if (multisigCreateKey.length > 0)
             args["create_key"] = multisigCreateKey
         return args
