@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import LezMultisig 1.0
 
 /**
  * ProposalDetail — full detail view for a multisig proposal.

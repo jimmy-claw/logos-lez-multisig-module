@@ -15,6 +15,9 @@ extern "C" {
 #include <QVariantList>
 #include <QQmlEngine>
 #include <QFutureWatcher>
+#include <QJsonArray>
+#include <QDir>
+#include <QStandardPaths>
 
 #include "registry_bridge.h"
 
@@ -29,7 +32,9 @@ class ProposalListModel;
  */
 class LezMultisigModule final : public QObject, public PluginInterface, public ILezMultisigModule {
     Q_OBJECT
+#ifndef LEZ_MULTISIG_UI_BUILD
     Q_PLUGIN_METADATA(IID ILezMultisigModule_iid FILE LEZ_MULTISIG_MODULE_METADATA_FILE)
+#endif
     Q_INTERFACES(PluginInterface)
 
 public:
@@ -38,8 +43,8 @@ public:
 
     // ── PluginInterface ──────────────────────────────────────────────────────
 
-    [[nodiscard]] QString name() const override { return QStringLiteral("liblez_multisig_module"); }
-    [[nodiscard]] QString version() const override;
+    [[nodiscard]] QString name() const override { return QStringLiteral("lez_multisig_module"); }
+    Q_INVOKABLE QString version() const override;
 
     // ── ILezMultisigModule lifecycle ─────────────────────────────────────────
 
@@ -67,6 +72,12 @@ public:
     // ── Registry ─────────────────────────────────────────────────────────────
 
     Q_INVOKABLE RegistryBridge* registryBridge() const { return m_registryBridge; }
+    Q_INVOKABLE ProposalListModel* proposalModel() const { return m_model; }
+
+    // ── Multisig persistence ─────────────────────────────────────────────────
+    Q_INVOKABLE void saveMultisig(const QString& name, const QString& programId, const QString& createKey);
+    Q_INVOKABLE QString loadMultisigs();
+    Q_INVOKABLE void deleteMultisig(const QString& createKey);
 
 signals:
     void eventResponse(const QString& eventName, const QVariantList& data);
@@ -95,4 +106,5 @@ private:
 
     QString mergeWithDefaults(const QString& argsJson) const;
     void emitEvent(const QString& eventName, const QVariantList& data);
+    static QString multisigsFilePath();
 };

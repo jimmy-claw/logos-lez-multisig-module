@@ -9,19 +9,28 @@
 #include "registry_bridge.h"
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QFile>
+#include <QDir>
 #include <QByteArray>
 #include <QtConcurrent/QtConcurrent>
 
 // ── Constructor / Destructor ──────────────────────────────────────────────────
 
 LezMultisigModule::LezMultisigModule()
-    : m_defaultSequencerUrl(QStringLiteral("http://localhost:9000"))
+    : m_defaultSequencerUrl(QStringLiteral("http://localhost:3040"))
     , m_defaultWalletPath(QString())
     , m_refreshWatcher(new QFutureWatcher<QString>(this))
     , m_actionWatcher(new QFutureWatcher<QString>(this))
     , m_createWatcher(new QFutureWatcher<QString>(this))
     , m_proposeWatcher(new QFutureWatcher<QString>(this))
 {
+    // Create model early so standalone app can find it
+    if (!m_model) {
+        m_model = new ProposalListModel(this);
+        m_model->setObjectName(QStringLiteral("proposalListModel"));
+        m_model->setSequencerUrl(m_defaultSequencerUrl);
+    }
+
     // Proposals refresh completion
     connect(m_refreshWatcher, &QFutureWatcher<QString>::finished, this, [this]() {
         const QString result = m_refreshWatcher->result();
@@ -61,6 +70,14 @@ LezMultisigModule::LezMultisigModule()
         if (!root.value(QLatin1String("success")).toBool()) {
             emit actionFailed(root.value(QLatin1String("error")).toString(QStringLiteral("Unknown error")));
             return;
+        }
+        // Auto-save the created multisig
+        {
+            const QString createKey = root.value(QLatin1String("create_key")).toString();
+            if (!createKey.isEmpty()) {
+                const QString progId = root.value(QLatin1String("multisig_program_id")).toString();
+                saveMultisig(QStringLiteral("Multisig ") + createKey.left(8), progId, createKey);
+            }
         }
         emit multisigCreated(resultJson);
     });
@@ -103,8 +120,11 @@ void LezMultisigModule::initLogos(LogosAPI* logosAPIInstance) {
     logosAPI = logosAPIInstance;
 
     // Create the proposal list model (parented to this module)
-    m_model = new ProposalListModel(this);
-    m_model->setSequencerUrl(m_defaultSequencerUrl);
+    if (!m_model) {
+        m_model = new ProposalListModel(this);
+        m_model->setObjectName(QStringLiteral("proposalListModel"));
+        m_model->setSequencerUrl(m_defaultSequencerUrl);
+    }
 
     if (!logosAPI) {
         qWarning() << "LezMultisigModule: initLogos called with null LogosAPI";
@@ -274,7 +294,9 @@ void LezMultisigModule::executeAsync(const QString& argsJson) {
 }
 
 void LezMultisigModule::createMultisigAsync(const QString& argsJson) {
+    qInfo() << "createMultisigAsync called with:" << argsJson;
     const QString merged = mergeWithDefaults(argsJson);
+    qInfo() << "Merged args:" << merged;
     QFuture<QString> future = QtConcurrent::run([merged]() -> QString {
         const QByteArray utf8 = merged.toUtf8();
         char* raw = lez_multisig_create(utf8.constData());
@@ -297,4 +319,83 @@ void LezMultisigModule::proposeAsync(const QString& argsJson) {
         return result;
     });
     m_proposeWatcher->setFuture(future);
+}
+
+// ── Multisig Persistence ──────────────────────────────────────────────────────
+
+/*static*/
+QString LezMultisigModule::multisigsFilePath() {
+    const QString dir = QDir::homePath() + QStringLiteral("/.lez");
+    QDir().mkpath(dir);
+    return dir + QStringLiteral("/multisigs.json");
+}
+
+void LezMultisigModule::saveMultisig(const QString& name, const QString& programId, const QString& createKey) {
+    const QString path = multisigsFilePath();
+    QJsonArray arr;
+
+    // Load existing
+    QFile file(path);
+    if (file.open(QIODevice::ReadOnly)) {
+        QJsonParseError err;
+        const QJsonDocument doc = QJsonDocument::fromJson(file.readAll(), &err);
+        if (err.error == QJsonParseError::NoError && doc.isArray())
+            arr = doc.array();
+        file.close();
+    }
+
+    // Check for duplicate (by create_key)
+    for (int i = 0; i < arr.size(); ++i) {
+        if (arr[i].toObject().value(QLatin1String("create_key")).toString() == createKey)
+            return; // Already saved
+    }
+
+    QJsonObject entry;
+    entry[QLatin1String("name")]       = name;
+    entry[QLatin1String("program_id")] = programId;
+    entry[QLatin1String("create_key")] = createKey;
+    arr.append(entry);
+
+    if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        file.write(QJsonDocument(arr).toJson(QJsonDocument::Indented));
+        file.close();
+    }
+}
+
+QString LezMultisigModule::loadMultisigs() {
+    const QString path = multisigsFilePath();
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly))
+        return QStringLiteral("[]");
+    const QByteArray data = file.readAll();
+    file.close();
+    QJsonParseError err;
+    const QJsonDocument doc = QJsonDocument::fromJson(data, &err);
+    if (err.error != QJsonParseError::NoError || !doc.isArray())
+        return QStringLiteral("[]");
+    return QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
+}
+
+void LezMultisigModule::deleteMultisig(const QString& createKey) {
+    const QString path = multisigsFilePath();
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly))
+        return;
+    QJsonParseError err;
+    const QJsonDocument doc = QJsonDocument::fromJson(file.readAll(), &err);
+    file.close();
+    if (err.error != QJsonParseError::NoError || !doc.isArray())
+        return;
+
+    QJsonArray arr = doc.array();
+    QJsonArray filtered;
+    for (int i = 0; i < arr.size(); ++i) {
+        if (arr[i].toObject().value(QLatin1String("create_key")).toString() != createKey)
+            filtered.append(arr[i]);
+    }
+
+    if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        file.write(QJsonDocument(filtered).toJson(QJsonDocument::Indented));
+        file.close();
+    }
 }

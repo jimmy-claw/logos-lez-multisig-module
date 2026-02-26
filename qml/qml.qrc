@@ -1,11 +1,13 @@
 <RCC>
-    <qresource prefix="/">
-        <file>qml/LezMultisigView.qml</file>
-        <file>qml/CreateMultisigForm.qml</file>
-        <file>qml/ProposeForm.qml</file>
-        <file>qml/ProposalCard.qml</file>
-        <file>qml/ProposalDetail.qml</file>
-        <file>qml/Theme.qml</file>
-        <file>qml/qmldir</file>
+    <qresource prefix="/lez-multisig">
+        <file>LezMultisigView.qml</file>
+        <file>CreateMultisigForm.qml</file>
+        <file>ProposeForm.qml</file>
+        <file>ProposalCard.qml</file>
+        <file>ProposalDetail.qml</file>
+        <file>Theme.qml</file>
+        <file>qmldir</file>
+        <file>LezMultisig/Theme.qml</file>
+        <file>LezMultisig/qmldir</file>
     </qresource>
 </RCC>
