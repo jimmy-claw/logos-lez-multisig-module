@@ -10,6 +10,14 @@
 
     lez-multisig-ffi.url = "github:jimmy-claw/lez-multisig-framework";
     lez-registry-ffi.url = "github:jimmy-claw/lez-registry?dir=lez-registry-ffi";
+
+    logos-lez-registry-module = {
+      url = "github:jimmy-claw/logos-lez-registry-module";
+      inputs.logos-liblogos.follows = "logos-liblogos";
+      inputs.logos-cpp-sdk.follows = "logos-cpp-sdk";
+      inputs.logos-capability-module.follows = "logos-capability-module";
+      inputs.lez-registry-ffi.follows = "lez-registry-ffi";
+    };
   };
 
   outputs =
@@ -21,6 +29,7 @@
       logos-capability-module,
       lez-multisig-ffi,
       lez-registry-ffi,
+      logos-lez-registry-module,
       ...
     }:
     let
@@ -32,10 +41,11 @@
         logosCapabilityModule = logos-capability-module.packages.${system}.default;
         lezMultisigFfi = lez-multisig-ffi.packages.${system}.default;
         lezRegistryFfi = lez-registry-ffi.packages.${system}.default;
+        lezRegistryModule = logos-lez-registry-module.packages.${system}.default;
       });
     in
     {
-      packages = forAllSystems ({ pkgs, logosSdk, logosLiblogos, logosCapabilityModule, lezMultisigFfi, lezRegistryFfi }:
+      packages = forAllSystems ({ pkgs, logosSdk, logosLiblogos, logosCapabilityModule, lezMultisigFfi, lezRegistryFfi, lezRegistryModule }:
         let
           common = import ./nix/default.nix {
             inherit pkgs logosSdk logosLiblogos;
@@ -47,7 +57,7 @@
           };
 
           app = import ./nix/app.nix {
-            inherit pkgs common src logosLiblogos logosSdk logosCapabilityModule lezMultisigFfi lezRegistryFfi;
+            inherit pkgs common src logosLiblogos logosSdk logosCapabilityModule lezMultisigFfi lezRegistryFfi lezRegistryModule;
             lezMultisigModule = lib;
           };
 

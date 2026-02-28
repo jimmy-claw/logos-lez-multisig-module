@@ -1,5 +1,5 @@
 # Builds the logos-lez-multisig-app standalone application
-{ pkgs, common, src, logosLiblogos, logosSdk, logosCapabilityModule, lezMultisigFfi, lezRegistryFfi, lezMultisigModule }:
+{ pkgs, common, src, logosLiblogos, logosSdk, logosCapabilityModule, lezMultisigFfi, lezRegistryFfi, lezMultisigModule, lezRegistryModule }:
 
 pkgs.stdenv.mkDerivation rec {
   pname = "logos-lez-multisig-app";
@@ -102,11 +102,13 @@ pkgs.stdenv.mkDerivation rec {
     echo "capability-module: ${logosCapabilityModule}"
     echo "lez-multisig-ffi: ${lezMultisigFfi}"
     echo "lez-multisig-module: ${lezMultisigModule}"
+    echo "lez-registry-module: ${lezRegistryModule}"
 
     test -d "${logosLiblogos}" || (echo "liblogos not found" && exit 1)
     test -d "${logosSdk}" || (echo "cpp-sdk not found" && exit 1)
     test -d "${logosCapabilityModule}" || (echo "capability-module not found" && exit 1)
     test -d "${lezMultisigModule}" || (echo "lez-multisig-module not found" && exit 1)
+    test -d "${lezRegistryModule}" || (echo "lez-registry-module not found" && exit 1)
 
     cmake -S app -B build \
       -GNinja \
@@ -158,6 +160,11 @@ pkgs.stdenv.mkDerivation rec {
       cp -L "${lezMultisigFfi}/lib/"liblez_multisig_ffi.* "$out/lib/" || true
     fi
 
+    # Copy lez-registry-ffi library
+    if ls "${lezRegistryFfi}/lib/"liblez_registry_ffi.* >/dev/null 2>&1; then
+      cp -L "${lezRegistryFfi}/lib/"liblez_registry_ffi.* "$out/lib/" || true
+    fi
+
     # Determine plugin extension
     OS_EXT="so"
     case "$(uname -s)" in
@@ -170,6 +177,9 @@ pkgs.stdenv.mkDerivation rec {
     fi
     if [ -f "${lezMultisigModule}/lib/liblez_multisig_module.$OS_EXT" ]; then
       cp -L "${lezMultisigModule}/lib/liblez_multisig_module.$OS_EXT" "$out/modules/"
+    fi
+    if [ -f "${lezRegistryModule}/lib/liblez_registry_module.$OS_EXT" ]; then
+      cp -L "${lezRegistryModule}/lib/liblez_registry_module.$OS_EXT" "$out/modules/"
     fi
 
     # Copy QML files for the app to find

@@ -247,6 +247,40 @@
         "type": "github"
       }
     },
+    "logos-lez-registry-module": {
+      "inputs": {
+        "lez-registry-ffi": [
+          "lez-registry-ffi"
+        ],
+        "logos-capability-module": [
+          "logos-capability-module"
+        ],
+        "logos-cpp-sdk": [
+          "logos-cpp-sdk"
+        ],
+        "logos-liblogos": [
+          "logos-liblogos"
+        ],
+        "nixpkgs": [
+          "logos-lez-registry-module",
+          "logos-liblogos",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1772126980,
+        "narHash": "sha256-wOQixG/jRvcF05nlMIyDH4/BD0bgw61G+0nXpJwQ+3E=",
+        "owner": "jimmy-claw",
+        "repo": "logos-lez-registry-module",
+        "rev": "903e8d529bced479297f0d4dd364437d4927d4eb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jimmy-claw",
+        "repo": "logos-lez-registry-module",
+        "type": "github"
+      }
+    },
     "logos-liblogos": {
       "inputs": {
         "logos-cpp-sdk": "logos-cpp-sdk_2",
@@ -495,6 +529,7 @@
         "lez-registry-ffi": "lez-registry-ffi",
         "logos-capability-module": "logos-capability-module",
         "logos-cpp-sdk": "logos-cpp-sdk_3",
+        "logos-lez-registry-module": "logos-lez-registry-module",
         "logos-liblogos": "logos-liblogos_2",
         "nixpkgs": [
           "logos-liblogos",

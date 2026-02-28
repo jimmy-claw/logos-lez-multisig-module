@@ -34,6 +34,13 @@ int main(int argc, char *argv[])
         std::cerr << "Failed to load capability_module plugin" << std::endl;
     }
 
+    // Load lez_registry_module (no deps beyond capability)
+    if (logos_core_load_plugin("lez_registry_module")) {
+        std::cout << "Successfully loaded lez_registry_module plugin" << std::endl;
+    } else {
+        std::cerr << "Failed to load lez_registry_module plugin" << std::endl;
+    }
+
     // Then load lez_multisig_module
     if (logos_core_load_plugin("lez_multisig_module")) {
         std::cout << "Successfully loaded lez_multisig_module plugin" << std::endl;
@@ -53,7 +60,7 @@ int main(int argc, char *argv[])
     MainWindow window;
     window.show();
 
-    std::cout << "LEZ Multisig App running — close window to exit." << std::endl;
+    std::cout << "LEZ Unified App running — close window to exit." << std::endl;
 
     int result = app.exec();
     logos_core_cleanup();

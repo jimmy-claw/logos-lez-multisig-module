@@ -12,6 +12,7 @@
 #include <QQmlContext>
 #include <QUrl>
 #include <QFile>
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -34,48 +35,80 @@ void MainWindow::setupUi()
         pluginExtension = ".so";
     #endif
 
-    QString pluginPath = QCoreApplication::applicationDirPath() + "/../modules/liblez_multisig_module" + pluginExtension;
-    QPluginLoader loader(pluginPath);
+    // ── Load multisig plugin ─────────────────────────────────────────────────
+    QString multisigPluginPath = QCoreApplication::applicationDirPath() + "/../modules/liblez_multisig_module" + pluginExtension;
+    QPluginLoader multisigLoader(multisigPluginPath);
 
-    QObject* pluginObj = nullptr;
-    if (loader.load()) {
-        pluginObj = loader.instance();
-        if (pluginObj) {
-            qInfo() << "LEZ Multisig module plugin loaded successfully";
+    QObject* multisigPluginObj = nullptr;
+    if (multisigLoader.load()) {
+        multisigPluginObj = multisigLoader.instance();
+        if (multisigPluginObj) {
+            std::cout << "[QPluginLoader] LEZ Multisig module loaded successfully" << std::endl;
         }
     } else {
-        qWarning() << "Failed to load LEZ Multisig module from:" << pluginPath;
-        qWarning() << "Error:" << loader.errorString();
+        std::cerr << "[QPluginLoader] Failed to load LEZ Multisig module: "
+                  << multisigLoader.errorString().toStdString() << std::endl;
     }
 
+    // ── Load registry plugin ─────────────────────────────────────────────────
+    QString registryPluginPath = QCoreApplication::applicationDirPath() + "/../modules/liblez_registry_module" + pluginExtension;
+    QPluginLoader registryLoader(registryPluginPath);
+
+    QObject* registryPluginObj = nullptr;
+    if (registryLoader.load()) {
+        registryPluginObj = registryLoader.instance();
+        if (registryPluginObj) {
+            std::cout << "[QPluginLoader] LEZ Registry module loaded successfully" << std::endl;
+        }
+    } else {
+        std::cerr << "[QPluginLoader] Failed to load LEZ Registry module: "
+                  << registryLoader.errorString().toStdString() << std::endl;
+    }
+
+    // ── Create QML widget ────────────────────────────────────────────────────
     m_quickWidget = new QQuickWidget(this);
     m_quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
 
     QString qmlDir = QCoreApplication::applicationDirPath() + "/../qml";
     m_quickWidget->engine()->addImportPath(qmlDir);
 
-    QUrl qmlUrl;
-    QString localQml = qmlDir + "/LezMultisigView.qml";
-    if (QFile::exists(localQml)) {
-        qmlUrl = QUrl::fromLocalFile(localQml);
-    } else {
-        qmlUrl = QUrl("qrc:/qml/LezMultisigView.qml");
-    }
-
-    // Expose plugin to QML as context properties
-    if (pluginObj) {
+    // ── Expose multisig context properties ───────────────────────────────────
+    if (multisigPluginObj) {
         m_quickWidget->engine()->rootContext()->setContextProperty(
-            QStringLiteral("lezMultisigModule"), pluginObj);
-        // Find the ProposalListModel child object
-        QObject* model = pluginObj->findChild<QObject*>(QStringLiteral("proposalListModel"));
+            QStringLiteral("lezMultisigModule"), multisigPluginObj);
+        QObject* model = multisigPluginObj->findChild<QObject*>(QStringLiteral("proposalListModel"));
         if (model) {
             m_quickWidget->engine()->rootContext()->setContextProperty(
                 QStringLiteral("lezMultisigModel"), model);
-            qInfo() << "ProposalListModel exposed to QML";
+            std::cout << "[Context] lezMultisigModel exposed to QML" << std::endl;
         } else {
-            qInfo() << "ProposalListModel not found - QML will use demo data";
+            std::cout << "[Context] ProposalListModel not found — QML will use demo data" << std::endl;
         }
-        qInfo() << "Context properties set for QML";
+    }
+
+    // ── Expose registry context properties ───────────────────────────────────
+    if (registryPluginObj) {
+        m_quickWidget->engine()->rootContext()->setContextProperty(
+            QStringLiteral("lezRegistryModule"), registryPluginObj);
+        QObject* registryModel = registryPluginObj->findChild<QObject*>(QStringLiteral("programListModel"));
+        if (registryModel) {
+            m_quickWidget->engine()->rootContext()->setContextProperty(
+                QStringLiteral("lezRegistryModel"), registryModel);
+            std::cout << "[Context] lezRegistryModel exposed to QML" << std::endl;
+        } else {
+            std::cout << "[Context] ProgramListModel not found — Registry QML will use fallback" << std::endl;
+        }
+    }
+
+    std::cout << "[Context] All context properties set for QML" << std::endl;
+
+    // ── Load unified QML view ────────────────────────────────────────────────
+    QUrl qmlUrl;
+    QString localQml = qmlDir + "/UnifiedView.qml";
+    if (QFile::exists(localQml)) {
+        qmlUrl = QUrl::fromLocalFile(localQml);
+    } else {
+        qmlUrl = QUrl("qrc:/qml/UnifiedView.qml");
     }
 
     m_quickWidget->setSource(qmlUrl);
@@ -87,7 +120,7 @@ void MainWindow::setupUi()
         }
         QWidget* fallbackWidget = new QWidget(this);
         QVBoxLayout* layout = new QVBoxLayout(fallbackWidget);
-        QLabel* messageLabel = new QLabel("LEZ Multisig QML view failed to load", fallbackWidget);
+        QLabel* messageLabel = new QLabel("LEZ Unified QML view failed to load", fallbackWidget);
         QFont font = messageLabel->font();
         font.setPointSize(14);
         messageLabel->setFont(font);
@@ -98,6 +131,6 @@ void MainWindow::setupUi()
         setCentralWidget(m_quickWidget);
     }
 
-    setWindowTitle("LEZ Multisig");
-    resize(800, 600);
+    setWindowTitle("LEZ Unified App");
+    resize(900, 700);
 }
