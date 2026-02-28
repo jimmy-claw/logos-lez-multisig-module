@@ -30,7 +30,7 @@ extern "C" {
  * args_json: {
  *   "sequencer_url":       "http://...",
  *   "wallet_path":         "...",
- *   "multisig_program_id": "hex64",
+ *   "program_id_hex": "hex64",
  *   "account":             "<signer AccountId>",
  *   "create_key":          "hex64  (unique key for PDA derivation)",
  *   "threshold":           2,
@@ -52,7 +52,7 @@ char* lez_multisig_create(const char* args_json);
  * args_json: {
  *   "sequencer_url":           "http://...",
  *   "wallet_path":             "...",
- *   "multisig_program_id":     "hex64",
+ *   "program_id_hex":     "hex64",
  *   "account":                 "<proposer AccountId>",
  *   "create_key":              "hex64",
  *   "target_program_id":       "hex64",
@@ -77,7 +77,7 @@ char* lez_multisig_propose(const char* args_json);
  * args_json: {
  *   "sequencer_url":       "http://...",
  *   "wallet_path":         "...",
- *   "multisig_program_id": "hex64",
+ *   "program_id_hex": "hex64",
  *   "account":             "<approver AccountId>",
  *   "create_key":          "hex64",
  *   "proposal_index":      1
@@ -102,7 +102,7 @@ char* lez_multisig_reject(const char* args_json);
  * args_json: {
  *   "sequencer_url":       "http://...",
  *   "wallet_path":         "...",
- *   "multisig_program_id": "hex64",
+ *   "program_id_hex": "hex64",
  *   "account":             "<executor AccountId>",
  *   "create_key":          "hex64",
  *   "proposal_index":      1
@@ -118,7 +118,7 @@ char* lez_multisig_execute(const char* args_json);
  * args_json: {
  *   "sequencer_url":       "http://...",
  *   "wallet_path":         "...",
- *   "multisig_program_id": "hex64",
+ *   "program_id_hex": "hex64",
  *   "create_key":          "hex64"
  * }
  *
@@ -148,7 +148,7 @@ char* lez_multisig_list_proposals(const char* args_json);
  * args_json: {
  *   "sequencer_url":       "http://...",
  *   "wallet_path":         "...",
- *   "multisig_program_id": "hex64",
+ *   "program_id_hex": "hex64",
  *   "create_key":          "hex64"
  * }
  *
